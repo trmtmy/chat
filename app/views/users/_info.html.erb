@@ -1,0 +1,47 @@
+<table class='table'>
+  
+<% if @book.errors.any? %>
+    <h3><%= @book.errors.count %>errors prohibited this obj from being saved:</h3>
+    <ul>
+      <% @book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  
+<% end %>
+
+  
+  <tr><%= image_tag user.get_profile_image(100,100) %></tr>
+  <tr>
+	  <th>name</th>
+	  <th><%= user.name %></th>
+  </tr>
+  <tr>
+	  <th>introduction</th>
+	  <th><%= user.introduction %></th>
+  </tr>
+  <tr>
+  <th>followes</th>
+  <td><%= link_to user.followings.count, user_followings_path(user) %></td>
+  </tr>
+  <th>followers</th>
+  <td><%= link_to user.followers.count, user_followers_path(user) %></td>
+</table>
+
+  <% unless current_user == user %> 
+    <% if current_user.following?(user) %>
+      <%= form_with model: @user, method: :delete, local: true do |f| %>
+        <%= f.submit "フォローを外す", class: 'btn btn-info' %>
+        <% end %>
+    <% else %>
+      <%= form_with model: @user, local: true do |f| %>
+        <%= f.submit "フォローする", class: 'btn btn-success' %>
+        <% end %>
+    <% end %>
+  <% end %>
+
+<div class='row'>
+  <%= link_to edit_user_path(user.id), class: "btn btn-outline-secondary btn-block" do %>
+    <i class="fas fa-user-cog"></i>
+  <% end %>
+</div>
