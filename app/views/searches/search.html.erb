@@ -29,7 +29,7 @@
           <th>opinion</th>
         </tr>
           <td><%= image_tag book.user.get_profile_image(50,50) %></td>
-          <td><%= book.title %></td>
+          <td><%= link_to book.title, book_path(book.id) %></td>
           <td><%= book.body %></td>
       <% end %>
     </tbody>
