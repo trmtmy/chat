@@ -18,6 +18,9 @@ class User < ApplicationRecord
   # メッセージ機能
   has_many :messages, dependent: :destroy
   has_many :entries, dependent: :destroy
+  
+  # カウント
+  has_many :read_counts, dependent: :destroy
 
   # フォローしたときの処理
   def follow(user_id)
