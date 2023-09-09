@@ -10,8 +10,13 @@ class BooksController < ApplicationController
 
   def index
     @book = Book.new
-    @books = Book.all
-
+    to = Time.current.at_end_of_day
+    from = (to - 6.day).at_beginning_of_day
+    @books = Book.includes(:favorited_users).
+      sort_by {|x|
+        x.favorited_users.includes(:favorites).where(created_at: from...to).size
+      }.reverse
+    @user = User.find_by(params[:id])
   end
 
   def create
@@ -51,7 +56,7 @@ class BooksController < ApplicationController
   def book_params
     params.require(:book).permit(:title, :body)
   end
-  
+
   def is_matching_login_user
     book = Book.find(params[:id])
     user = book.user
